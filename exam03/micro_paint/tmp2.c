@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 FILE	*file;
 
@@ -31,7 +31,7 @@ int	exec(void)
 
 	memset(canvas, background, width * height);
 
-	while ((count = fscanf(file, "%c %f %f %f %f %c", &type, &rec_x, &rec_y, &rec_w, &rec_h, &color)) == 6)
+	while ((count = fscanf(file, "%c %f %f %f %f %c\n", &type, &rec_x, &rec_y, &rec_w, &rec_h, &color)) == 6)
 	{
 		if (rec_w < 0 && rec_y < 0 && (type != 'R' || type != 'r'))
 			return (0);
@@ -52,7 +52,7 @@ int	exec(void)
 			}
 		}
 	}
-	if (count == EOF)
+	if (count != EOF)
 		return (0);
 	count = -1;
 	while (++count < height)
