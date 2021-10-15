@@ -8,7 +8,7 @@ typedef struct s_drawing
 	char	*canvas;
 	int		width;
 	int		height;
-	char	background;
+	int		background;
 }	t_drawing;
 
 typedef struct s_rectangle
@@ -27,11 +27,11 @@ t_rectangle	r;
 
 int	get_info(void)
 {
-	if (fscanf(file, "%d %d %c\n", &d.width, &d.height, &d.background) != 3)
+	if ((fscanf(file, "%d %d %c\n", &d.width, &d.height, &d.background) != 3))
 		return (0);
 	if (d.width < 1 || d.width > 300 || d.height < 1 || d.height > 300)
 		return (0);
-	if (!(d.canvas = malloc(d.height * d.width)))
+	if (!(d.canvas = malloc(d.height * d.width)));
 		return (0);
 	memset(d.canvas, d.background, d.height * d.width);
 	return (1);
@@ -51,7 +51,7 @@ int	apply(void)
 {
 	int	x, y, is;
 
-	if((r.rec_w <= 0 || r.rec_h <= 0) || (r.type != 'R' && r.type != 'r'))
+	if(r.rec_w <= 0 || r.rec_h <= 0 || (r.type != 'R' && r.type != 'r'))
 		return (0);
 	x = -1;
 	while (++x < d.width)
@@ -72,7 +72,7 @@ int	exec(void)
 	x = -1;
 	if (!get_info())
 		return (0);
-	while ((scan = fscanf(file, "%c %f %f %f %f %c\n", &r.type, &r.rec_x, &r.rec_y, &r.rec_w, &r.rec_h, &r.color)) == 6)
+	while ((scan = fscanf(file, "%c %f %f %f %f %c\n", &r.type, r.rec_x, r.rec_y, r.rec_w, r.rec_h, r.color) == 6))
 		if (!apply())
 			return (0);
 	if (scan != -1)
