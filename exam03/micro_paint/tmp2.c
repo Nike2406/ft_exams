@@ -18,6 +18,8 @@ char	color;
 
 char	*canvas;
 
+
+
 int	exec(void)
 {
 	int	x, y, count;
@@ -31,7 +33,8 @@ int	exec(void)
 
 	memset(canvas, background, width * height);
 
-	while ((count = fscanf(file, "%c %f %f %f %f %c\n", &type, &rec_x, &rec_y, &rec_w, &rec_h, &color)) == 6)
+	while ((count = fscanf(file, "%c %f %f %f %f %c\n",
+				&type, &rec_x, &rec_y, &rec_w, &rec_h, &color)) == 6)
 	{
 		if (rec_w < 0 && rec_y < 0 && (type != 'R' || type != 'r'))
 			return (0);
@@ -41,13 +44,13 @@ int	exec(void)
 			x = -1;
 			while (++x < width)
 			{
-				if (x < rec_x || rec_x + rec_w < x ||
-					y < rec_y || rec_y + rec_h < y)
-					continue;
-				else if (x - rec_x < 1 || (rec_x + rec_w) - x < 1 ||
-					y - rec_y < 1 || (rec_y + rec_h) - y < 1)
-					canvas[y * width + x] = color;
-				else if (type == 'R')
+				// if (x < rec_x || rec_x + rec_w < x ||
+				// 	y < rec_y || rec_y + rec_h < y)
+				// 	continue;
+				// else if (x - rec_x < 1. || (rec_x + rec_w) - x < 1. ||
+				// 	y - rec_y < 1. || (rec_y + rec_h) - y < 1.)
+				// 	canvas[y * width + x] = color;
+				// else if (type == 'R')
 					canvas[y * width + x] = color;
 			}
 		}
