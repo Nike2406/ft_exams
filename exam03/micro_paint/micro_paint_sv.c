@@ -1,31 +1,26 @@
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int		width, height;
-float	x, y, w, h;
 char	*draw;
-char	type, back, color;
+char	type, color, back;
+float	x, y, w, h;
 
-int	check_hit(float i, float j)
-{
-	if (i < x || x + w < i || j < y || y + h < j)
+int		check_hit(float i, float j) {
+	if (i < x || i > x + w || j < y || j > y + h)
 		return (0);
 	if (i - x < 1 || x + w - i < 1 || j - y < 1 || y + h - j < 1)
-		return (2);
-	return (1);
+		return (2); // Border
+	return (1); // Inside
 }
 
-void	drawing(void)
-{
-	int	i, j, hit;
+void	drawning(void) {
+	int	i = -1, j, hit;
 
-	i = -1;
-	while (++i < width)
-	{
+	while (++i < width) {
 		j = -1;
-		while (++j < height)
-		{
+		while (++j < height) {
 			hit = check_hit((float)i, (float)j);
 			if (hit == 2 || (hit == 1 && type == 'R'))
 				draw[i + j * width] = color;
@@ -33,11 +28,9 @@ void	drawing(void)
 	}
 }
 
-int	parser(FILE *file)
-{
-	int	i, res;
+int		parser(FILE *file) {
+	int	i = 0, result;
 
-	i = 0;
 	if (fscanf(file, "%d %d %c\n", &width, &height, &back) != 3)
 		return (1);
 	if (width < 1 || width > 300 || height < 1 || height > 300)
@@ -47,37 +40,33 @@ int	parser(FILE *file)
 		return (1);
 	while (i < width * height)
 		draw[i++] = back;
-	while ((res = fscanf(file, "%c %f %f %f %f %c\n", &type, &x, &y, &w, &h, &color)) == 6)
-	{
-		if (w <= 0 || h <= 0 || (type != 'R' && type != 'r'))
+	while ((result = fscanf(file, "%c %f %f %f %f %c\n", &type, &x, &y, &w, &h, &color)) == 6) {
+		if (w <= 0 || h <= 0 || (type != 'r' && type != 'R'))
 			return (1);
-		drawing();
+		drawning();
 	}
-	if (res != -1)
+	if (result != -1)
 		return (1);
 	return (0);
 }
 
-void	output(void)
-{
-	int i = -1;
-	while (++i < height)
-	{
+void	output(void) {
+	int	i = -1, c = 10;
+
+	while (++i < height) {
 		write(1, draw + i * width, width);
-		write(1, "\n", 1);
+		write(1, &c, 1);
 	}
 }
 
-int		main(int ac, char **av)
-{
+int		main(int ac, char **av) {
 	FILE	*file;
-	if (ac != 2)
-	{
+
+	if (ac != 2) {
 		write(1, "Error: argumnet\n", 16);
 		return (1);
 	}
-	if (!(file = fopen(av[1], "r")) || parser(file))
-	{
+	if (!(file = fopen(av[1], "r")) || parser(file)) {
 		write(1, "Error: Operation file corrupted\n", 32);
 		return (1);
 	}
@@ -86,4 +75,3 @@ int		main(int ac, char **av)
 	free(draw);
 	return (0);
 }
-
