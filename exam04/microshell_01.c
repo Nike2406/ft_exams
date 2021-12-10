@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
-//#include <stdio.h>
+#include <stdio.h>
 
 #define STDIN		0
 #define STDOUT		1
@@ -38,9 +38,9 @@ void   exec_cmd(t_cmd *list, char **envp)
 		fatal();
 	if (pid == 0)
  	{
- 		if ((list->type[1] == 1) && (dup2(list->pipe[1], 1)) < 0)
+ 		if ((list->type[1] == 1) && (dup2(list->pipe[1], 1) < 0))
 			fatal();
-		if ((list->type[0] == 1) && (dup2(list->prev_pipe, 0)) < 0)
+		if ((list->type[0] == 1) && (dup2(list->prev_pipe, 0) < 0))
 			fatal();
 		if ((ex = execve(list->args[0], list->args, envp)) < 0)
 		{
@@ -91,8 +91,8 @@ int main(int argc, char **argv, char **envp) {
 	t_cmd list;
 	int  i;
 	int  start;
-
 	i = 0;
+ 	//if (argc > 1)
   	while (i < argc && argv[++i])
 	{
    		start = i;
@@ -110,7 +110,8 @@ int main(int argc, char **argv, char **envp) {
 		}
 		else if (i > start)
 			exec_cmd(&list, envp);
-		// write(1, "\n", 1);
+		printf("\n");
 	}
 	return 0;
 }
+
