@@ -1,33 +1,30 @@
 #pragma once
 
-#include <iostream>
 #include "ASpell.hpp"
-#include "ATarget.hpp"
-#include <map>
+#include <vector>
 
 class Warlock
 {
-    private:
-        std::string name;
-        std::string title;
+private:
+	string					_name;
+	string					_title;
 
-        Warlock();
-        Warlock(Warlock const &other);
-        Warlock &operator=(Warlock const &other);
+	std::vector<ASpell*>	spells;
+public:
+	Warlock(string const &name, string const &title);
+	~Warlock();
+	Warlock(Warlock const &copy);
+	Warlock	const& operator=(Warlock const &);
 
-        std::map<std::string, ASpell *> arr;
-    public:
-        Warlock(std::string const &name, std::string const &title);
-        ~Warlock();
+	string	const &getName() const;
+	string	const &getTitle() const;
 
-        std::string const &getName() const;
-        std::string const &getTitle() const;
+	void	setTitle(string const &newTitle);
 
-        void setTitle(std::string const &title);
+	void	introduce() const;
 
-        void introduce() const;
-
-        void learnSpell(ASpell *aspell_ptr);
-        void forgetSpell(std::string name);
-        void launchSpell(std::string name, ATarget const &atarget_ref);
+	void	learnSpell(ASpell *spell);
+	void	forgetSpell(string const &spell);
+	void	launchSpell(string const &spell, ATarget const &target);
 };
+

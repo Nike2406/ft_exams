@@ -1,28 +1,29 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include "ATarget.hpp"
+
+using std::cout;
+using std::endl;
+using std::string;
 
 class ATarget;
 
 class ASpell
 {
-    private:
-        std::string name;
-        std::string effects;
+protected:
+	string	_name;
+	string	_effects;
+public:
+	ASpell(string const &name, string const &effects);
+	virtual ~ASpell();
+	ASpell(ASpell const &copy);
+	ASpell	const &operator=(ASpell const &other);
 
-    public:
-        ASpell();
-        ASpell(std::string const &name, std::string const &effects);
-        ASpell(ASpell const &other);
-        ASpell &operator=(ASpell const &other);
-        virtual ~ASpell();
+	string	const &getName() const;
+	string	const &getEffects() const;
+	virtual ASpell	*clone() const = 0;
 
-        std::string const &getName() const;
-        std::string const &getEffects() const;
-
-        void launch(ATarget const &atarget_ref) const;
-
-        virtual ASpell *clone() const = 0;
+	void	launch(ATarget const &target) const;
 };
-
-#include "ATarget.hpp"

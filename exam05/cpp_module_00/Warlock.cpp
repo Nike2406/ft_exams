@@ -1,18 +1,30 @@
 #include "Warlock.hpp"
 
-Warlock::Warlock(std::string const &name, std::string const &title)
+
+Warlock::Warlock(string const &name, string const &title)
+	: _name(name), _title(title)
 {
-    this->name = name;
-    this->title = title;
-    std::cout << this->name << ": This looks like another boring day.\n";
+	cout << this->getName() << ": This looks like another boring day." << endl;
 }
 
-Warlock::~Warlock() {std::cout << this->name << ": My job here is done!\n";}
+Warlock::~Warlock()
+{
+	cout << this->getName() << ": My job here is done!" << endl;
+}
 
-std::string const &Warlock::getName() const { return (this->name);}
-std::string const &Warlock::getTitle() const { return (this->title);}
+string	const &Warlock::getName() const {
+	return this->_name;
+}
 
-void Warlock::setTitle(std::string const &title) { this->title = title;}
+string	const &Warlock::getTitle() const {
+	return this->_title;
+}
 
-void Warlock::introduce() const { std::cout << this->name << ": I am " << this->name << ", " << this->title << "!\n";}
+void	Warlock::setTitle(string const &newTitle) {
+	this->_title = newTitle;
+}
 
+void	Warlock::introduce() const {
+	cout << this->getName() << ": I am " << this->getName() << ", "
+	 << this->getTitle() << "!"<< endl;
+}

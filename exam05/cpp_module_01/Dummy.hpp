@@ -1,12 +1,10 @@
-#pragma once
-
 #include "ATarget.hpp"
 
 class Dummy: public ATarget
 {
-    public:
-        Dummy();
-        ~Dummy();
+public:
+	Dummy();
+	virtual ~Dummy();
 
-        virtual ATarget *clone() const;
+	virtual ATarget *clone(void) const;
 };
