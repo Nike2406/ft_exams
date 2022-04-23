@@ -1,4 +1,4 @@
-#pragma once
+#pragma	once
 
 #include <iostream>
 #include <string>
@@ -12,7 +12,7 @@ class ASpell;
 
 class ATarget
 {
-private:
+protected:
 	string	_type;
 public:
 	ATarget(string const &type);
@@ -21,7 +21,9 @@ public:
 	ATarget	const &operator=(ATarget const &other);
 
 	string	const &getType() const;
+
 	virtual ATarget	*clone() const = 0;
 
-	void	getHitBySpell(ASpell const &spell) const;
+	void	getHItBySpell(ASpell const &spell) const;
 };
+

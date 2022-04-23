@@ -1,4 +1,4 @@
-#pragma once
+#pragma	once
 
 #include <iostream>
 #include <string>
@@ -23,7 +23,9 @@ public:
 
 	string	const &getName() const;
 	string	const &getEffects() const;
+
 	virtual ASpell	*clone() const = 0;
 
 	void	launch(ATarget const &target) const;
 };
+
