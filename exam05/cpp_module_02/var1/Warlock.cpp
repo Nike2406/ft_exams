@@ -6,7 +6,12 @@ Warlock::Warlock(string const &name, string const &title)
 	}
 
 Warlock::~Warlock() {
-		cout << _name << ": My job here is done!\n";
+	cout << _name << ": My job here is done!\n";
+	vector<ASpell*>::iterator ite = this->spells.end();
+	for(vector<ASpell*>::iterator it = this->spells.begin(); it != ite; ++it) {
+		delete (*it);
+	}
+	this->spells.clear();
 }
 
 Warlock::Warlock(Warlock const &copy)
@@ -41,12 +46,12 @@ void	Warlock::learnSpell(ASpell *spell) {
 }
 
 void	Warlock::forgetSpell(string const &name) {
-	spellBook.forgetSpell(name);
+	this->spellBook.forgetSpell(name);
 }
 
 void	Warlock::launchSpell(string const &name, ATarget const &target) {
-	ATarget const *tmp = 0;
-	if (tmp == &target)
+	ATarget *tmpTarget = 0;
+	if (tmpTarget == &target)
 		return;
 	ASpell *spell = this->spellBook.createSpell(name);
 	if (spell)
