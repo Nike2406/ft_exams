@@ -82,30 +82,28 @@ void send_msg(int fd) {
 int main(int argc, char **argv) {
 	int sockfd, connfd;
     socklen_t   len;
-	struct sockaddr_in servaddr, cli; 
+	struct sockaddr_in servaddr, cli;
 
     if (argc != 2) {
         print(2, "Wrong number of arguments\n");
     }
 
-	// socket create and verification 
-	sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-	if (sockfd == -1) { 
-		print(2, "Fatal error\n"); 
-		exit(0); 
-	} 
-	bzero(&servaddr, sizeof(servaddr)); 
-
-	// assign IP, PORT 
-	servaddr.sin_family = AF_INET; 
-	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
-	servaddr.sin_port = htons(atoi(argv[1])); 
-  
-	// Binding newly created socket to given IP and verification 
-	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0) { 
+	// socket create and verification
+	sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (sockfd == -1) {
 		print(2, "Fatal error\n");
-	} 
-	else
+	}
+	bzero(&servaddr, sizeof(servaddr));
+
+	// assign IP, PORT
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = htonl(2130706433); //127.0.0.1
+	servaddr.sin_port = htons(atoi(argv[1]));
+
+	// Binding newly created socket to given IP and verification
+	if ((bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr))) != 0) {
+		print(2, "Fatal error\n");
+	}
 	if (listen(sockfd, 10) != 0) {
 		print(2, "Fatal error\n");
 	}
@@ -125,15 +123,16 @@ int main(int argc, char **argv) {
 
         if (FD_ISSET(sockfd, &read_set)) {
             connfd = accept(sockfd, (struct sockaddr *)&cli, &len);
-            if (connfd < 0) { 
-                print(2, "Fatal error\n"); 
-            } 
+            if (connfd < 0) {
+                print(2, "Fatal error\n");
+            }
             arr_id[connfd] = client_id++;
             FD_SET(connfd, &actual_set);
             max_fd = connfd > max_fd ? connfd : max_fd;
 			sprintf(buff_send, "server: client %d just arrived\n", arr_id[connfd]);
-            arr_str[connfd] = NULL;
 			send_msg(connfd);
+            arr_str[connfd] = NULL;
+			continue;
         }
 
 		for (int fd = 3; fd <= max_fd; fd++) {
@@ -147,11 +146,11 @@ int main(int argc, char **argv) {
 					break;
 				} else {
 					buff_read[count] = '\0';
-					arr_str[fd] = str_join(arr_str[fd], buff_read); 
+					arr_str[fd] = str_join(arr_str[fd], buff_read);
 					message = NULL;
 
 					while (extract_message(&arr_str[fd], &message)) {
-						sprintf(buff_send, "client %d: ", arr_id[fd]);					
+						sprintf(buff_send, "client %d: ", arr_id[fd]);
 						send_msg(fd);
 					}
 					free(message);
