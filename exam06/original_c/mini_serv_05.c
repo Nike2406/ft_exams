@@ -51,7 +51,7 @@ int main(int ac, char **av) {
 
 	struct sockaddr_in	servaddr;
 	socklen_t			len;
-	bzero(sockfd, &active_set);
+	bzero(&servaddr, sizeof(servaddr));
 
 	// assign IP, PORT
 	servaddr.sin_family = AF_INET;
@@ -94,6 +94,7 @@ int main(int ac, char **av) {
 					break;
 				} else {
 					for (int i = 0, j = strlen(clients[fd].msg); i < res; i++, j++) {
+						clients[fd].msg[j] = buff_read[i];
 						if (clients[fd].msg[j] == '\n') {
 							clients[fd].msg[j] = '\0';
 							sprintf(buff_write, "client %d: %s\n", clients[fd].id, clients[fd].msg);
